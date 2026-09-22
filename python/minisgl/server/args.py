@@ -218,6 +218,20 @@ def parse_args(args: List[str], run_shell: bool = False) -> Tuple[ServerArgs, bo
     )
 
     parser.add_argument(
+        "--dry-backend",
+        default=ServerArgs.dry_backend,
+        choices=["cpu", "cuda"],
+        help="The implementation used to apply DRY repetition penalties.",
+    )
+
+    parser.add_argument(
+        "--dry-algorithm",
+        default=ServerArgs.dry_algorithm,
+        choices=["z", "naive", "candidate_parallel", "blocked_parallel", "window"],
+        help="The matching algorithm used to compute DRY repetition penalties.",
+    )
+
+    parser.add_argument(
         "--shell-mode",
         action="store_true",
         help="Run the server in shell mode.",

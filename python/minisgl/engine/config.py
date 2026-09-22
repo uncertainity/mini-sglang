@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import cached_property
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Literal
 
 import torch
 from minisgl.distributed import DistributedInfo
@@ -10,6 +10,15 @@ from minisgl.utils import cached_load_hf_config
 
 if TYPE_CHECKING:
     from minisgl.models import ModelConfig
+
+
+DryAlgorithm = Literal[
+    "z",
+    "naive",
+    "candidate_parallel",
+    "blocked_parallel",
+    "window",
+]
 
 
 @dataclass(frozen=True)
@@ -20,6 +29,8 @@ class EngineConfig:
     max_running_req: int = 256
     attention_backend: str = "auto"
     moe_backend: str = "auto"
+    dry_backend: Literal["cpu", "cuda"] = "cpu"
+    dry_algorithm: DryAlgorithm = "z"
     cuda_graph_bs: List[int] | None = None
     cuda_graph_max_bs: int | None = None
     page_size: int = 1

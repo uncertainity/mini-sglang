@@ -80,7 +80,12 @@ class Engine:
             self.ctx.moe_backend = self.moe_backend = create_moe_backend(config.moe_backend)
 
         # ======================= Sampler initialization ========================
-        self.sampler = Sampler(self.device, config.model_config.vocab_size)
+        self.sampler = Sampler(
+            self.device,
+            config.model_config.vocab_size,
+            dry_backend=config.dry_backend,
+            dry_algorithm=config.dry_algorithm,
+        )
 
         post_free_memory = self._sync_get_memory()[0]
         logger.info_rank0(f"Free memory after initialization: {mem_GB(post_free_memory)}")
